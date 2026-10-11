@@ -1,0 +1,17 @@
+{
+  "short_name": "Waaheen",
+  "name": "Waaheen Online Market",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/shop",
+  "background_color": "#0D1B2A",
+  "theme_color": "#0D1B2A",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/"
+}

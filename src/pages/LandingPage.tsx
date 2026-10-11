@@ -10,6 +10,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+    React.useEffect(() => {
+        const handler = (e: any) => {
+            e.preventDefault();
+            setDeferredPrompt(e);
+        };
+        window.addEventListener('beforeinstallprompt', handler);
+        return () => window.removeEventListener('beforeinstallprompt', handler);
+    }, []);
+
+    const handleInstallApp = () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult: any) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                setDeferredPrompt(null);
+            });
+        }
+    };
 
     const categories = [
         { name: 'Dharka Ragga (Men)', icon: <Shirt size={22} />, desc: 'Shaadhadh, Suudh, Saraawiil & Funaanado' },
@@ -320,6 +342,20 @@ const LandingPage: React.FC = () => {
                                     <span className="download-title">Download APK (Android)</span>
                                 </div>
                             </a>
+
+                            {deferredPrompt && (
+                                <button
+                                    onClick={handleInstallApp}
+                                    className="btn btn-primary btn-download-card"
+                                    style={{ border: '2px solid #38BDF8', cursor: 'pointer' }}
+                                >
+                                    <Smartphone size={28} />
+                                    <div className="text-left">
+                                        <span className="download-label">Toos Ugu Shubo Mobile-ka</span>
+                                        <span className="download-title">Install Waaheen App</span>
+                                    </div>
+                                </button>
+                            )}
 
                             <div className="google-play-badge">
                                 <div className="play-icon">▶</div>
